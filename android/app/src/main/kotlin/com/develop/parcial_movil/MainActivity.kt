@@ -1,0 +1,5 @@
+package com.develop.parcial_movil
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
