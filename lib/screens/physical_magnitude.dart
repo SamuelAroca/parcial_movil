@@ -99,12 +99,10 @@ class _PressureConverterState extends State<PressureConverter> {
     if (unit == 'Pa') {
       final double atmospheres = pascals / 101325;
       final double mmHg = pascals / 133.322;
-      atmospheresController.text =
-          atmospheres.toStringAsFixed(9); // Mostrar más decimales
+      atmospheresController.text = atmospheres.toStringAsFixed(9);
       mmHgController.text = mmHg.toStringAsFixed(9);
     }
-    setState(
-        () {}); // Actualizar el estado para que se muestre el mensaje de advertencia
+    setState(() {});
   }
 
   void _updatePascalsAndMmHg(String value, String unit) {
@@ -120,8 +118,7 @@ class _PressureConverterState extends State<PressureConverter> {
       pascalsController.text = pascals.toStringAsFixed(9);
       mmHgController.text = mmHg.toStringAsFixed(9);
     }
-    setState(
-        () {}); // Actualizar el estado para que se muestre el mensaje de advertencia
+    setState(() {});
   }
 
   void _updatePascalsAndAtmospheres(String value, String unit) {
@@ -135,10 +132,8 @@ class _PressureConverterState extends State<PressureConverter> {
       final double pascals = mmHg * 133.322;
       final double atmospheres = mmHg / 760;
       pascalsController.text = pascals.toStringAsFixed(9);
-      atmospheresController.text =
-          atmospheres.toStringAsFixed(9); // Mostrar más decimales
+      atmospheresController.text = atmospheres.toStringAsFixed(9);
     }
-    setState(
-        () {}); // Actualizar el estado para que se muestre el mensaje de advertencia
+    setState(() {});
   }
 }
