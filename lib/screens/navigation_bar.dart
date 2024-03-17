@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parcial_movil/screens/degrees.dart';
+import 'package:parcial_movil/screens/physical_magnitude.dart';
 
 class NavigationLineBar extends StatefulWidget {
   const NavigationLineBar({super.key});
@@ -34,7 +35,7 @@ class _NavigationBarState extends State<NavigationLineBar> {
             label: 'Degrees',
           ),
           NavigationDestination(
-            icon: Badge(child: Icon(Icons.rule)),
+            icon: Icon(Icons.rule),
             label: 'Magnitude',
           ),
         ],
@@ -42,29 +43,7 @@ class _NavigationBarState extends State<NavigationLineBar> {
       body: <Widget>[
         /// Home page
         const Degrees(),
-
-        /// Notifications page
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.notifications_sharp),
-                  title: Text('Notification 1'),
-                  subtitle: Text('This is a notification'),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.notifications_sharp),
-                  title: Text('Notification 2'),
-                  subtitle: Text('This is a notification'),
-                ),
-              ),
-            ],
-          ),
-        ),
+        const PressureConverter(),
 
         /// Messages page
         ListView.builder(

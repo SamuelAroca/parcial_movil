@@ -31,45 +31,37 @@ class _Degrees extends State<Degrees> {
                 ),
                 const SizedBox(height: 8),
                 SizedBox(
-                  width: 300,
-                  child: TextField(
-                    controller: inputController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter in degrees Celsius',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.contains(',') || value.contains('-')) {
-                          _showInvalidInputAlert();
-                        } else {
-                          celsius = num.tryParse(value);
-                          fahrenheit = null;
-                        }
-                      });
-                    },
-                  ),
-                ),
+                    width: 300,
+                    child: TextField(
+                      controller: inputController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter in degrees Celsius',
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            celsius = null;
+                            fahrenheit = null;
+                          } else if (value.contains(',') ||
+                              value.contains('-')) {
+                            _showInvalidInputAlert();
+                          } else {
+                            celsius = num.tryParse(value);
+                            if (celsius != null) {
+                              fahrenheit = convertToFahrenheit(celsius!);
+                            }
+                          }
+                        });
+                      },
+                    )),
                 const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    if (celsius != null) {
-                      setState(() {
-                        fahrenheit = convertToFahrenheit(celsius!);
-                      });
-                    } else {
-                      _showEmptyInputAlert();
-                    }
-                  },
-                  child: const Text('Convert to Fahrenheit'),
+                Text(
+                  'Fahrenheit: ${fahrenheit?.toStringAsFixed(2) ?? ''}',
+                  style: const TextStyle(fontSize: 18),
                 ),
-                if (fahrenheit != null)
-                  Text(
-                    'Fahrenheit: ${fahrenheit!.toStringAsFixed(2)}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
               ],
             ),
           ),
@@ -91,28 +83,6 @@ class _Degrees extends State<Degrees> {
           title: const Text('Invalid Input'),
           content: const Text(
               'Please enter a valid Celsius value without commas or negative signs.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showEmptyInputAlert() {
-    inputController.text = '';
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Empty Input'),
-          content:
-              const Text('Please enter a Celsius value before converting.'),
           actions: [
             TextButton(
               onPressed: () {
