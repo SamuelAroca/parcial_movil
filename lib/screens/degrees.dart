@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Degrees extends StatefulWidget {
-  const Degrees({super.key});
+  const Degrees({Key? key});
 
   @override
   State<StatefulWidget> createState() {
@@ -29,13 +29,15 @@ class _Degrees extends State<Degrees> {
                   'Degrees Celsius',
                   style: TextStyle(fontSize: 24),
                 ),
-                const SizedBox(width: 300),
-                _buildTextField(
-                  controller: inputController,
-                  label: 'Enter in degrees Celsius',
-                  onChanged: (value) {
-                    onChange(value);
-                  },
+                SizedBox(
+                    width: 300,
+                    child: _buildTextField(
+                      controller: inputController,
+                      label: 'Enter in degrees Celsius',
+                      onChanged: (value) {
+                        onChange(value);
+                      },
+                    ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -73,7 +75,7 @@ class _Degrees extends State<Degrees> {
         celsius = null;
         fahrenheit = null;
       } else {
-        celsius = num.tryParse(value);
+        celsius = _parseCelsius(value);
         if (celsius != null) {
           fahrenheit = convertToFahrenheit(celsius!);
         }
@@ -81,17 +83,40 @@ class _Degrees extends State<Degrees> {
     });
   }
 
-  num convertToFahrenheit(num celsius) {
-    return (celsius * 9 / 5) + 32;
+  double? _parseCelsius(String value) {
+    // Eliminar espacios en blanco al principio y al final del valor
+    value = value.trim();
+
+    // Verificar si el texto contiene solo un símbolo "-" y al menos un dígito después
+    if (value.startsWith('-') && value.length > 1) {
+      // Tratar de parsear el número excluyendo el símbolo "-"
+      final parsedValue = num.tryParse(value.substring(1));
+      return parsedValue!.toDouble() * -1; // Multiplicar por -1 para hacerlo negativo
+    } else {
+      // Intentar parsear el número directamente
+      return num.tryParse(value)?.toDouble();
+    }
   }
 
   String? _getErrorText(String? value) {
     if (value == null || value.isEmpty) {
       return null;
     }
-    if (value.contains(',') || value.contains('-')) {
+    double? parsedValue = _parseCelsius(value)?.toDouble();
+    if (parsedValue != null) {
+      // Si se pudo parsear el número, verificar si hay una "," antes o después de un número
+      if (value.contains(',') && (value.indexOf(',') < value.indexOf(parsedValue.toString()) ||
+          value.indexOf(',') > value.indexOf(parsedValue.toString()) + parsedValue.toString().length)) {
+        return 'Please enter a valid number';
+      }
+      return null;
+    } else {
       return 'Please enter a valid number';
     }
-    return null;
+  }
+
+
+  num convertToFahrenheit(num celsius) {
+    return (celsius * 9 / 5) + 32;
   }
 }
