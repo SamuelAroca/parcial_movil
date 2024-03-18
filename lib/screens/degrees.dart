@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Degrees extends StatefulWidget {
-  const Degrees({Key? key});
+  const Degrees({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -84,16 +84,12 @@ class _Degrees extends State<Degrees> {
   }
 
   double? _parseCelsius(String value) {
-    // Eliminar espacios en blanco al principio y al final del valor
     value = value.trim();
 
-    // Verificar si el texto contiene solo un símbolo "-" y al menos un dígito después
     if (value.startsWith('-') && value.length > 1) {
-      // Tratar de parsear el número excluyendo el símbolo "-"
       final parsedValue = num.tryParse(value.substring(1));
-      return parsedValue!.toDouble() * -1; // Multiplicar por -1 para hacerlo negativo
+      return parsedValue!.toDouble() * -1;
     } else {
-      // Intentar parsear el número directamente
       return num.tryParse(value)?.toDouble();
     }
   }
@@ -104,7 +100,6 @@ class _Degrees extends State<Degrees> {
     }
     double? parsedValue = _parseCelsius(value)?.toDouble();
     if (parsedValue != null) {
-      // Si se pudo parsear el número, verificar si hay una "," antes o después de un número
       if (value.contains(',') && (value.indexOf(',') < value.indexOf(parsedValue.toString()) ||
           value.indexOf(',') > value.indexOf(parsedValue.toString()) + parsedValue.toString().length)) {
         return 'Please enter a valid number';
@@ -114,7 +109,6 @@ class _Degrees extends State<Degrees> {
       return 'Please enter a valid number';
     }
   }
-
 
   num convertToFahrenheit(num celsius) {
     return (celsius * 9 / 5) + 32;
