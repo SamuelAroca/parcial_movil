@@ -29,7 +29,6 @@ class _Degrees extends State<Degrees> {
                   'Degrees Celsius',
                   style: TextStyle(fontSize: 24),
                 ),
-                const SizedBox(height: 8),
                 const SizedBox(width: 300),
                 _buildTextField(
                   controller: inputController,
