@@ -6,3 +6,6 @@ void main() {
     home: NavigationLineBar(),
   ));
 }
+
+// Samuel Aroldo Aroca Díaz
+// Jim Steven Díaz del Castillo Cuero

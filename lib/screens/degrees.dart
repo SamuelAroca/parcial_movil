@@ -29,15 +29,12 @@ class _Degrees extends State<Degrees> {
                   'Degrees Celsius',
                   style: TextStyle(fontSize: 24),
                 ),
-                SizedBox(
-                    width: 300,
-                    child: _buildTextField(
-                      controller: inputController,
-                      label: 'Enter in degrees Celsius',
-                      onChanged: (value) {
-                        onChange(value);
-                      },
-                    ),
+                _buildTextField(
+                  controller: inputController,
+                  label: 'Enter in degrees Celsius',
+                  onChanged: (value) {
+                    onChange(value);
+                  },
                 ),
                 const SizedBox(height: 8),
                 Text(
