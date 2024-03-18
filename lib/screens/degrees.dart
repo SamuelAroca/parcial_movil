@@ -30,33 +30,14 @@ class _Degrees extends State<Degrees> {
                   style: TextStyle(fontSize: 24),
                 ),
                 const SizedBox(height: 8),
-                SizedBox(
-                    width: 300,
-                    child: TextField(
-                      controller: inputController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter in degrees Celsius',
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            celsius = null;
-                            fahrenheit = null;
-                          } else if (value.contains(',') ||
-                              value.contains('-')) {
-                            _showInvalidInputAlert();
-                          } else {
-                            celsius = num.tryParse(value);
-                            if (celsius != null) {
-                              fahrenheit = convertToFahrenheit(celsius!);
-                            }
-                          }
-                        });
-                      },
-                    )),
+                const SizedBox(width: 300),
+                _buildTextField(
+                  controller: inputController,
+                  label: 'Enter in degrees Celsius',
+                  onChanged: (value) {
+                    onChange(value);
+                  },
+                ),
                 const SizedBox(height: 8),
                 Text(
                   'Fahrenheit: ${fahrenheit?.toStringAsFixed(2) ?? ''}',
@@ -70,29 +51,48 @@ class _Degrees extends State<Degrees> {
     );
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required void Function(String) onChanged,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+        errorText: _getErrorText(controller.text),
+      ),
+      onChanged: onChanged,
+    );
+  }
+
+  void onChange(String value) {
+    setState(() {
+      if (value.isEmpty) {
+        celsius = null;
+        fahrenheit = null;
+      } else {
+        celsius = num.tryParse(value);
+        if (celsius != null) {
+          fahrenheit = convertToFahrenheit(celsius!);
+        }
+      }
+    });
+  }
+
   num convertToFahrenheit(num celsius) {
     return (celsius * 9 / 5) + 32;
   }
 
-  void _showInvalidInputAlert() {
-    inputController.text = '';
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Invalid Input'),
-          content: const Text(
-              'Please enter a valid Celsius value without commas or negative signs.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+  String? _getErrorText(String? value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+    if (value.contains(',') || value.contains('-')) {
+      return 'Please enter a valid number';
+    }
+    return null;
   }
 }
